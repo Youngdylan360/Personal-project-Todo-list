@@ -6,13 +6,23 @@ import { motion, useTime, useTransform } from "motion/react"
 export function Header() {
   const time = useTime();
 
-  const rotate = useTransform(time, [0, 3000], [0, 360], {
+  const rotate = useTransform(time, [0, 28000], [0, 360], {
     clamp: false,
   });
 
   const rotatingBg = useTransform(rotate, (rot) => {
-    return (`conic-gradient(from ${rot}deg, #ff4545, #006aff, #ff0095, #ff4545)`)
+    return (`conic-gradient(from ${rot}deg, #391689, #313437, #313437, #391689, #391689, #313437, #313437, #391689, #391689, #313437, #313437, #391689)`)
   })
+
+  const buttonGradient = useTransform(rotate, (r) => {
+    return (`conic-gradient(from ${r}deg, #391689, #056362, #391689, #056362)`)
+  })
+
+  const pulsingBg = useTransform(time, (t) => {
+    const blur = (Math.sin(t / 1000) + 1) * 5;
+    return `blur(${blur}px)`;
+  });
+  
 
   return (
     <>
@@ -25,11 +35,68 @@ export function Header() {
           </div>
 
           <div className="flex justify-center items-center gap-2">
-            <Button className="px-6 rounded-full text-[0.9rem] bg-[#414141] py-3"> <ion-icon className="text-blue-800" name="hammer-outline"></ion-icon>WORK</Button>
+            <motion.div className="p-[0.3rem] relative rounded-full"
+              initial="rest"
+              whileHover="hover"
+              animate="rest">
 
-            <Button className="px-6 rounded-full bg-[#414141] text-[0.9rem] py-3">PERSONAL</Button>
+              <motion.div className="rounded-full absolute inset-0"
+                style={{ background: "conic-gradient(#391689, #056362, #391689, #056362)",
+                  filter: pulsingBg,
+                 }}
+                variants={{
+                  rest: { opacity: 1, transition: { duration: 0.5 } },
+                  hover: { opacity: 1, transition: { duration: 0.5 } }
+                }}
+              />
+              <motion.div className="rounded-full absolute inset-0"
+                style={{ background: "conic-gradient(#391689, #056362, #391689, #056362)" }}
+                variants={{
+                  rest: { opacity: 1, transition: { duration: 0.5 } },
+                  hover: { opacity: 1, transition: { duration: 0.5 } }
+                }}
+              />
+              <Button className="px-6 rounded-full text-[0.9rem] bg-[#414141] py-3 relative"> <ion-icon className="text-blue-800" name="hammer-outline"></ion-icon>WORK</Button>
 
-            <Button className="px-6 rounded-full bg-[#414141] text-[0.9rem] py-3">STUDY</Button>
+            </motion.div>
+
+            <motion.div className="p-[0.3rem] relative rounded-full"
+              initial="rest"
+              whileHover="hover"
+              animate="rest">
+
+              <motion.div className="rounded-full absolute inset-0"
+                style={{ background: buttonGradient }}
+                variants={{
+                  rest: {
+                    opacity: 0, transition: { duration: 0.5 }
+                  },
+                  hover: {
+                    opacity: 1, transition: { duration: 0.5 }
+                  }
+                }}
+              />
+              <Button className="px-6 rounded-full bg-[#414141] text-[0.9rem] py-3 relative">PERSONAL</Button>
+
+            </motion.div>
+
+            <motion.div className="p-[0.3rem] relative rounded-full"
+              initial="rest"
+              whileHover="hover"
+            >
+
+              <motion.div className=" absolute inset-0 rounded-full"
+                style={{ background: buttonGradient}}
+                variants={{
+                  rest: { opacity: 0, transition: { duration: 0.5}},
+                  hover: { opacity: 1, transition: { duration: 0.5} }
+                }}
+              />
+              <Button className="px-6 relative rounded-full bg-[#414141] text-[0.9rem] py-3">STUDY</Button>
+
+
+
+            </motion.div>
           </div>
         </header>
 
@@ -38,13 +105,26 @@ export function Header() {
         </div>
 
         <div className="w-full flex justify-center items-center ">
-          <motion.div className="flex relative flex-col w-[23.6rem] rounded-md div p-px inset-0 h-44 mt-7 justify-center items-center wrapper" 
-          style={{
-            background:
-              rotatingBg,
-          }}>
+          <motion.div
+            className="flex relative flex-col w-[23.6rem] rounded-md div p-px inset-0 h-44 mt-7 justify-center items-center wrapper"
+            initial="rest"
+            whileHover="hover"
+            animate="rest"
+          >
+            <motion.div
+              className="absolute inset-0 rounded-md"
+              style={{ background: rotatingBg }}
+              variants={{
+                rest: { opacity: 0, transition: { duration: 0.5 } },
+                hover: { opacity: 1, transition: { duration: 0.5 } },
+              }}
+            />
             <Add />
           </motion.div>
+        </div>
+
+        <div className="w-full h-8 flex justify-center items-center">
+          <p className="w-52 mt-6 h-[0.23rem] bg-[#056362]"></p>
         </div>
 
 

@@ -8,7 +8,7 @@ export function Add() {
 
   return (
     <>
-      <div className="w-[99%] h-[99%] absolute bg-[#1E232A] rounded-md flex pt-[1.5rem]  text-white box-border">
+      <div className="w-[98%] h-[98%] absolute bg-[#1E232A] rounded-md flex pt-[1.5rem]  text-white box-border">
 
         
         <div className="flex flex-col items-start gap-y-[1rem] text-[1.3rem] ps-6">
@@ -27,7 +27,7 @@ export function Add() {
           </div>
         </div>
 
-        <div className="pt-9 w-32  flex ">
+        <div className="pt-9 w-32 flex gap-x-4 ">
           <div className="bg-[#1a8cd8] py-1 px-2 h-8  rounded-md">WORK</div>
        
           <div className="-mt-9 ms-2 flex flex-col pb-4 gap-y-4 h-[10rem]">
