@@ -1,5 +1,7 @@
 import pencilIcon from "../assets/pencil-icon.svg"
 import trashCanIcon from "../assets/trash-can.svg"
+import cartIcon from "../assets/cart-icon.svg"
+import bookIcon from "../assets/book-icon.svg"
 
 
 export function ActivityHistory() {
@@ -12,7 +14,7 @@ export function ActivityHistory() {
 
           <div className="flex flex-col text-white items-start  w-[60%] h-14 mt-4 ms-5">
             <div className="flex gap-x-2 justify-center items-center">
-              img <h1 className="text-[1.2rem]">Buy grocery </h1>
+              <img src={cartIcon} alt="cartIcon" /> <h1 className="text-[1.2rem]">Buy grocery </h1>
             </div>
 
             <p className="text-base font-thin pt-1">Due date: Today</p>
@@ -38,7 +40,7 @@ export function ActivityHistory() {
 
           <div className="flex flex-col text-white items-start  w-[58%] h-14 mt-4 ms-5">
             <div className="flex gap-x-2 justify-center items-center">
-              img <h1 className="text-[1.2rem]">Review Chapter 5 </h1>
+              <img src={bookIcon} alt="bookIcon" /> <h1 className="text-[1.2rem]">Review Chapter 5 </h1>
             </div>
 
             <p className="text-base font-thin pt-1">Due date: Mon, 30</p>

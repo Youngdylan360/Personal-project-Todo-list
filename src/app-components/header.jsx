@@ -1,7 +1,8 @@
 import { Button } from "../components/ui/button"
 import { Search } from "./search"
-import { Add } from "./add-activity"
 import { motion, useTime, useTransform } from "motion/react"
+import { Add } from "./add-activity";
+import { TreePalm } from "lucide-react";
 
 export function Header() {
   const time = useTime();
@@ -12,21 +13,21 @@ export function Header() {
 
   const rotatingBg = useTransform(rotate, (rot) => {
     return (`conic-gradient(from ${rot}deg, #391689, #313437, #313437, #391689, #391689, #313437, #313437, #391689, #391689, #313437, #313437, #391689)`)
-  })
+  });
 
   const buttonGradient = useTransform(rotate, (r) => {
     return (`conic-gradient(from ${r}deg, #391689, #056362, #391689, #056362)`)
-  })
+  });
 
   const pulsingBg = useTransform(time, (t) => {
     const blur = (Math.sin(t / 1000) + 1) * 5;
     return `blur(${blur}px)`;
   });
-  
+
 
   return (
     <>
-      <div>
+      <div className="box-border">
         <header className="flex flex-col justify-center box-border h-[10rem] gap-y-8">
 
           <div className="flex ms-8 w-[16rem] h-16 contain-content items-center gap-x-4">
@@ -41,9 +42,10 @@ export function Header() {
               animate="rest">
 
               <motion.div className="rounded-full absolute inset-0"
-                style={{ background: "conic-gradient(#391689, #056362, #391689, #056362)",
+                style={{
+                  background: "conic-gradient(#391689, #056362, #391689, #056362)",
                   filter: pulsingBg,
-                 }}
+                }}
                 variants={{
                   rest: { opacity: 1, transition: { duration: 0.5 } },
                   hover: { opacity: 1, transition: { duration: 0.5 } }
@@ -63,7 +65,9 @@ export function Header() {
             <motion.div className="p-[0.3rem] relative rounded-full"
               initial="rest"
               whileHover="hover"
-              animate="rest">
+              animate="rest"
+              whileTap="tap"
+              whileDrag="hover">
 
               <motion.div className="rounded-full absolute inset-0"
                 style={{ background: buttonGradient }}
@@ -73,7 +77,8 @@ export function Header() {
                   },
                   hover: {
                     opacity: 1, transition: { duration: 0.5 }
-                  }
+                  },
+                  tap: { opacity: 1, transition: { duration: 0.1 } }
                 }}
               />
               <Button className="px-6 rounded-full bg-[#414141] text-[0.9rem] py-3 relative">PERSONAL</Button>
@@ -82,14 +87,16 @@ export function Header() {
 
             <motion.div className="p-[0.3rem] relative rounded-full"
               initial="rest"
+              whileTap="tap"
               whileHover="hover"
             >
 
               <motion.div className=" absolute inset-0 rounded-full"
-                style={{ background: buttonGradient}}
+                style={{ background: buttonGradient }}
                 variants={{
-                  rest: { opacity: 0, transition: { duration: 0.5}},
-                  hover: { opacity: 1, transition: { duration: 0.5} }
+                  rest: { opacity: 0, transition: { duration: 0.1 } },
+                  tap: { opacity: 1, transition: { duration: 0.001 } },
+                  hover: { opacity: 1, transition: { duration: 0.5 } }
                 }}
               />
               <Button className="px-6 relative rounded-full bg-[#414141] text-[0.9rem] py-3">STUDY</Button>
@@ -100,35 +107,36 @@ export function Header() {
           </div>
         </header>
 
-        <div>
+        <motion.div>
           <Search />
-        </div>
+        </motion.div>
 
-        <div className="w-full flex justify-center items-center ">
+        <div className="w-full flex justify-center items-center">
           <motion.div
-            className="flex relative flex-col w-[23.6rem] rounded-md div p-px inset-0 h-44 mt-7 justify-center items-center wrapper"
-            initial="rest"
-            whileHover="hover"
-            animate="rest"
-          >
-            <motion.div
-              className="absolute inset-0 rounded-md"
-              style={{ background: rotatingBg }}
-              variants={{
-                rest: { opacity: 0, transition: { duration: 0.5 } },
-                hover: { opacity: 1, transition: { duration: 0.5 } },
-              }}
-            />
-            <Add />
-          </motion.div>
+          className="flex relative flex-col w-[23.6rem] rounded-md div p-px inset-0 h-44 mt-7 justify-center items-center  wrapper"
+          initial="rest"
+          whileHover="hover"
+          animate="rest"
+          whileTap="tap"
+        >
+          <motion.div
+            className="absolute flex justify-center items-center inset-0 rounded-md"
+            style={{ background: "conic-gradient(from 0deg, #391689, #313437, #313437, #391689, #391689, #313437, #313437, #391689, #391689, #313437, #313437, #391689)" }}
+            variants={{
+              rest: { opacity: 0, transition: { duration: 0.5 } },
+              hover: { opacity: 1, transition: { duration: 0.5 } },
+            }}
+          />
+          <Add />
+        </motion.div>
         </div>
 
         <div className="w-full h-8 flex justify-center items-center">
           <p className="w-52 mt-6 h-[0.23rem] bg-[#056362]"></p>
         </div>
-
-
       </div>
+
+      
     </>
   )
 }
