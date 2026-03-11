@@ -6,7 +6,7 @@ import {
 } from "../../components/ui/dropdown-menu"
 
 
-export function SoundList({ sound }) {
+export function SoundList({ sound, soundSelected }) {
   const [playingSound, setPlayingSound] = useState(null);
 
   const playPauseSound = (item) => {
@@ -23,7 +23,7 @@ export function SoundList({ sound }) {
         <DropdownMenuLabel>Select Alert Sound</DropdownMenuLabel>
         <div className="h-[5rem] font-bold w-[8.2rem]  [scrollbar-width:none] overflow-y-auto ">
           {sound.map((item) => (
-            <DropdownMenuItem key={item}>
+            <DropdownMenuItem key={item} onClick={() => {soundSelected(item)}}>
                 <div className="ps-2">
                   {item}
                 </div> 
@@ -41,6 +41,7 @@ export function SoundList({ sound }) {
             <div onClick={(e) => {
                 e.stopPropagation()
                 playPauseSound()
+                //find way to send user uploaded song to soundSelected
               }}>
               {
                 playingSound === null ? <ion-icon name="pause-outline"></ion-icon> : <ion-icon name="play-outline"></ion-icon>

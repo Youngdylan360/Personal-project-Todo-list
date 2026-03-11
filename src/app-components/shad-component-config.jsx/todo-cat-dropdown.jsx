@@ -1,4 +1,4 @@
-import { act } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,16 +9,41 @@ import {
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu"
 import { Button } from "../../components/ui/button";
+import { TimeContext } from "../context-hook";
+import { warningCodes } from "../context-hook";
 
 
-export function CategoryDropDown({categoryUserInput}) {
+export function CategoryDropDown({ setCategoryUserInput, setRenderCheckMark }) {
   const category = ['None', 'work', 'Personal', 'Study', 'Others'];
+
+  // 1. Consume all required values from the context in a single call.
+  const { categoryUserInput, categoryWarning } = useContext(TimeContext);
+  const { renderCheckMark } = useContext(warningCodes);
+  const [changeTxtEl, setChangeTxtEl] = useState('Todo Category');
+
+  useEffect(() => {
+    if (categoryUserInput) {
+      setChangeTxtEl('Todo Category');
+    } else {
+      setChangeTxtEl('Choose Category');
+    }
+  }, [categoryUserInput, categoryWarning]);
+
+  const getClickedItem = (activity) => {
+    setCategoryUserInput(activity)
+
+    if (renderCheckMark === activity) {
+      setRenderCheckMark(null);
+    } else {
+      setRenderCheckMark(activity);
+    }
+  }
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">Todo Category</Button>
+          <Button variant="outline" className={`${categoryWarning ? 'text-red-500' : ''} ${categoryUserInput ? 'text-black' : ''} `} children={changeTxtEl}></Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>
@@ -26,7 +51,9 @@ export function CategoryDropDown({categoryUserInput}) {
             <div className="[scrollbar-width:none] h-[5rem] overflow-y-auto">
               {
                 category.map((activity) => (
-                  <DropdownMenuItem key={activity} onClick={() => categoryUserInput(activity)}>{activity}</DropdownMenuItem>
+                  <DropdownMenuItem key={activity} className="hover:bg-[#424546]" onClick={() => 
+                  getClickedItem(activity)
+                  }>{activity}{renderCheckMark === activity ? <ion-icon name="checkmark-outline" class="text-green-700 font-bold ps-[3rem] "></ion-icon> : ''}</DropdownMenuItem>
                 ))
               }
             </div>
@@ -37,7 +64,7 @@ export function CategoryDropDown({categoryUserInput}) {
   )
 }
 
-export function RepeatTodo({repeatOption}) {
+export function RepeatTodo({ repeatOption }) {
   const repeat = ['None', 'Everyday', 'week', 'Month', 'Year'];
 
   return (

@@ -4,7 +4,7 @@ import { motion, useTime, useTransform } from "motion/react"
 import { Add } from "./add-activity";
 import { TreePalm } from "lucide-react";
 
-export function Header() {
+export function Header({addActivity, setCategoryUserInput}) {
   const time = useTime();
 
   const rotate = useTransform(time, [0, 28000], [0, 360], {
@@ -58,7 +58,10 @@ export function Header() {
                   hover: { opacity: 1, transition: { duration: 0.5 } }
                 }}
               />
-              <Button className="px-6 rounded-full text-[0.9rem] bg-[#414141] py-3 relative"> <ion-icon className="text-blue-800" name="hammer-outline"></ion-icon>WORK</Button>
+              <Button className="px-6 rounded-full text-[0.9rem] bg-[#414141] py-3 relative" onClick={() => {
+                addActivity();
+                setCategoryUserInput('work');
+              }}> <ion-icon className="text-blue-800 " name="hammer-outline"></ion-icon>WORK</Button>
 
             </motion.div>
 
@@ -81,7 +84,10 @@ export function Header() {
                   tap: { opacity: 1, transition: { duration: 0.1 } }
                 }}
               />
-              <Button className="px-6 rounded-full bg-[#414141] text-[0.9rem] py-3 relative">PERSONAL</Button>
+              <Button className="px-6 rounded-full bg-[#414141] text-[0.9rem] py-3 relative" onClick={() => {
+                addActivity();
+                setCategoryUserInput('Personal');
+              }}>PERSONAL</Button>
 
             </motion.div>
 
@@ -99,7 +105,10 @@ export function Header() {
                   hover: { opacity: 1, transition: { duration: 0.5 } }
                 }}
               />
-              <Button className="px-6 relative rounded-full bg-[#414141] text-[0.9rem] py-3">STUDY</Button>
+              <Button className="px-6 relative rounded-full bg-[#414141] text-[0.9rem] py-3" onClick={() => {
+                addActivity();
+                setCategoryUserInput('Study');
+              }}>STUDY</Button>
 
 
 
@@ -121,7 +130,7 @@ export function Header() {
         >
           <motion.div
             className="absolute flex justify-center items-center inset-0 rounded-md"
-            style={{ background: "conic-gradient(from 0deg, #391689, #313437, #313437, #391689, #391689, #313437, #313437, #391689, #391689, #313437, #313437, #391689)" }}
+            style={{ background: rotatingBg }}
             variants={{
               rest: { opacity: 0, transition: { duration: 0.5 } },
               hover: { opacity: 1, transition: { duration: 0.5 } },

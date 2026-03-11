@@ -1,30 +1,31 @@
 import addIcon from "../assets/add-icon.svg"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useContext } from "react"
 import { CalendarDate } from "./calendar";
 import { TextareaField } from "./text-input";
+import { TimeContext } from "./context-hook";
+import { warningCodes } from "./context-hook";
 import "./add-todo.css"
 
 
-export function CreateTodo() {
-  const [addBgBlur, setAddBgBlur] = useState(false);
-  const [dateSelected, setDateSelected] = useState('');
-  const [todoMessage, setTodoMessage] = useState('');
-  const [hourSelected, setHourSelected] = useState('');  
-  const [minuteSelected, setMinuteSelected] = useState('');
-  const [soundSelected, setSoundSelected] = useState('');
-  const [categoryUserInput, setCategoryUserInput] = useState('');
-  const [repeatOption, setRepeatOption] = useState('');
-  const [sendCalendarWarning, setSendCalendarWarning] = useState('');
+export function CreateTodo({setTodoMessage, setDateSelected, setHourSelected, setMinuteSelected, setSoundSelected, setCategoryUserInput, setRepeatOption, setCategoryWarning, setSoundSelectedWarning, setTimeSelectedWarning, setCalendarBorderWarning, addActivity, setRenderCheckMark}) {  
 
+  const { todoMessage, dateSelected, hourSelected, minuteSelected, soundSelected, categoryUserInput, addBgBlur, calendarBorderWarning, categoryWarning, timeSelectedWarning, soundSelectedWarning } = useContext(warningCodes);
 
-  // check from source and pass value
-  const warning = useRef(null);
+  //pratice useContext
+
+  const authCalendarInput = () => {
+    setCalendarBorderWarning(!dateSelected);
+    setSoundSelectedWarning(!soundSelected);
+    if (!hourSelected && !minuteSelected) {
+      setTimeSelectedWarning(true);
+    } else {
+      setTimeSelectedWarning(false);
+    }
+    
+    setCategoryWarning(!categoryUserInput)
+  }
 
   
-
-  const addActivity = () => {
-    setAddBgBlur(!addBgBlur);
-  }
 
   // const textInputCheck = () => {
   //   if (!textInput.current.innerValue) {
@@ -52,19 +53,25 @@ export function CreateTodo() {
 
         {addBgBlur && (
           <div className="fixed flex-col pt-8 justify-center items-center top-0 left-0 z-40 overflow-auto bottom-0 bg-white-800/2 backdrop-blur-lg w-full h-full" onClick={addActivity}>
-            <span className="text-white absolute top-[0.1rem] left-3" onClick={addActivity}>back img </span>
+            <span className="text-white absolute top-[0rem] left-0" onClick={addActivity}><ion-icon name="arrow-back-outline" class="w-[3.3rem] pt-4  pe-4"
+            ></ion-icon></span>
 
-            <CalendarDate warning={warning} 
+            <CalendarDate
               dateSelected={setDateSelected}
-            />
+              calendarBorderWarning={calendarBorderWarning}
+              dateInput={dateSelected}
+              />
 
             <div className="w-full flex justify-center items-center">
               <div className="w-[64%]">
-                <TextareaField todoMessage={setTodoMessage} hourSelected={setHourSelected} minuteSelected={setMinuteSelected} soundSelected={setSoundSelected} categoryUserInput={setCategoryUserInput} repeatOption={setRepeatOption} dateInput={dateSelected} warning={warning}/>
+                <TimeContext.Provider value={{hourSelected, categoryUserInput, categoryWarning}}>
+                  <TextareaField todoMessage={setTodoMessage} hourSelected={setHourSelected} minuteSelected={setMinuteSelected} soundSelected={setSoundSelected} setCategoryUserInput={setCategoryUserInput} repeatOption={setRepeatOption} dateInput={dateSelected} authCalendarInput={authCalendarInput} soundSelectedWarning={soundSelectedWarning} userAlertSound={soundSelected}
+                  timeSelectedWarning={timeSelectedWarning} setRenderCheckMark={setRenderCheckMark}/>
+                </TimeContext.Provider>
               </div>
             </div>
-            
-            
+
+
           </div>
         )}
       </div>

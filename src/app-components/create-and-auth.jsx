@@ -1,22 +1,23 @@
 import { FunnelPlus } from "lucide-react";
 import { Button } from "../components/ui/button";
 
-export function CreateAndVerifyTodo({dateInput, warning}) {
+
+export function CreateAndVerifyTodo({checkMessageStatus, authCalendarInput}) {
 
   const verifyInput = () => {
-    if (!dateInput) {
-      warning.current.innerHTML = 'Please choose a date';
-    } else {
-      warning.current.innerHTML = 'Select a due date for your Todo';
-    }
+    checkMessageStatus();
+    authCalendarInput();
   }
 
+  
+  
 
   return (
     <>
-      <Button onClick={(e) => e.stopPropagation(
-        verifyInput()
-      )}>Add Todo</Button>
+      <Button onClick={(e) => {
+        e.stopPropagation();
+        verifyInput();
+      }}>Add Todo</Button>
     </>
   )
 }

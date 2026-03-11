@@ -1,15 +1,16 @@
 
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useEffect } from "react"
 import * as React from "react"
 import { Button } from "../components/ui/button"
 import { Calendar } from "../components/ui/calendar"
 import { Card, CardContent, CardFooter } from "../components/ui/card"
 import { addDays } from "date-fns"
 import { FieldLabel } from "../components/ui/field"
+import { tr } from "date-fns/locale"
 
-export function CalendarDate({ dateSelected, warning }) {
+export function CalendarDate({ dateSelected, calendarBorderWarning, dateInput }) {
   const [date, setDate] = React.useState(
     new Date(new Date().getFullYear(), 1, 12)
   );
@@ -17,20 +18,27 @@ export function CalendarDate({ dateSelected, warning }) {
     new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   );
 
-
+  // Determine if we are in an error state:
+  // We show error if the parent says so (calendarBorderWarning) AND we still don't have a dateInput.
+  // If the user selects a date (dateInput becomes true), the error clears immediately visually.
+  const isInvalid = calendarBorderWarning && !dateInput;
 
   return (
-    <div>
-      <Card className="mx-auto w-fit bg-[#313437] text-white pt-0 pe-0 max-w-[300px]" size="sm"  onClick={(e) => e.stopPropagation()}>
-        <FieldLabel ref={warning} className="m-auto pt-4">
-          Select a due date for your Todo
+    <>
+      <Card className={`mx-auto w-fit bg-[#313437] text-white pt-0 pe-0 max-w-[300px] ${isInvalid ? 'border-2 border-red-500' : ''}`} size="sm" onClick={(e) => e.stopPropagation()}>
+        <FieldLabel className={`m-auto pt-4 ${isInvalid ? 'text-red-500' : 'text-white'}`}>
+          {isInvalid ? '!Please choose a date' : 'Select a due date for your Todo'}
         </FieldLabel>
         <CardContent>
           <Calendar
             mode="single"
             selected={date}
             dateSelected={dateSelected}
-            onSelect={setDate}
+            onSelect={(day) => {
+              setDate(day);
+              // Ensure we update the parent state so the error clears
+              if (dateSelected) dateSelected(day);
+            }}
             month={currentMonth}
             onMonthChange={setCurrentMonth}
             className="p-0 [--cell-size:--spacing(9)]"
@@ -65,6 +73,6 @@ export function CalendarDate({ dateSelected, warning }) {
           ))}
         </CardFooter>
       </Card>
-    </div>
+    </>
   )
 }
