@@ -13,21 +13,35 @@ import { TimeContext } from "../context-hook";
 import { warningCodes } from "../context-hook";
 
 
-export function CategoryDropDown({ setCategoryUserInput, setRenderCheckMark }) {
+export function CategoryDropDown({ setCategoryUserInput  }) {
   const category = ['None', 'work', 'Personal', 'Study', 'Others'];
 
   // 1. Consume all required values from the context in a single call.
   const { categoryUserInput, categoryWarning } = useContext(TimeContext);
-  const { renderCheckMark } = useContext(warningCodes);
+  const { renderCheckMark, setRenderCheckMark, checkMark } = useContext(warningCodes);
   const [changeTxtEl, setChangeTxtEl] = useState('Todo Category');
 
   useEffect(() => {
-    if (categoryUserInput) {
+    if (!categoryWarning) {
       setChangeTxtEl('Todo Category');
     } else {
       setChangeTxtEl('Choose Category');
     }
-  }, [categoryUserInput, categoryWarning]);
+
+    if (checkMark) {
+      setRenderCheckMark(checkMark);
+    }
+
+
+  }, [categoryWarning, checkMark, setRenderCheckMark]);
+
+
+
+  useEffect(() => {
+    if (categoryUserInput) {
+      setChangeTxtEl('Todo Category')
+    }
+  }, [categoryUserInput]);
 
   const getClickedItem = (activity) => {
     setCategoryUserInput(activity)

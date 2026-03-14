@@ -1,24 +1,14 @@
 import { Field, FieldLabel } from "../components/ui/field"
 import { Textarea } from "../components/ui/textarea"
 import { RingSound } from "./ringsound"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { CategoryDropDown, RepeatTodo } from "./shad-component-config.jsx/todo-cat-dropdown";
 import { CreateAndVerifyTodo } from "./create-and-auth";
-import { TimeContext } from "./context-hook";
+import { TodoTitle } from "./shad-component-config.jsx/Todo-title";
+import { warningCodes } from "./context-hook";
 
-export function TextareaField({ todoMessage, hourSelected, minuteSelected, soundSelected, repeatOption, setCategoryUserInput, dateInput, authCalendarInput, soundSelectedWarning, userAlertSound, timeSelectedWarning, setRenderCheckMark }) {
-  const [textAreaEl, setTextAreaEl] = useState(false);
-  const [removeTextBorderWarning, setRemoveTextBorderWarning] = useState(false);
-
-
-  // authenticating user message input
-  const authUserMessageInput = () => {
-    if (!message) {
-      setTextAreaEl(true);
-    } else {
-      setTextAreaEl(false);
-    }
-  }
+export function TextareaField({ todoMessage, hourSelected, minuteSelected, soundSelected, repeatOption, setCategoryUserInput, dateInput, soundSelectedWarning, userAlertSound, timeSelectedWarning, setRenderCheckMark }) {
+  const { todoMessageWarning } = useContext(warningCodes);
 
   // Use state to manage the textarea's value, initializing from localStorage.
   // The function passed to useState runs only on the initial render.
@@ -40,12 +30,6 @@ export function TextareaField({ todoMessage, hourSelected, minuteSelected, sound
     localStorage.setItem('userMessage', JSON.stringify(message));
     todoMessage(message);
 
-    if (message) {
-      setRemoveTextBorderWarning(true);
-    } else {
-      setRemoveTextBorderWarning(false);
-    }
-
   }, [message, todoMessage]);
 
   // Update state when the user types in the textarea.
@@ -56,12 +40,17 @@ export function TextareaField({ todoMessage, hourSelected, minuteSelected, sound
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center py-2"  >
+      <div className="flex flex-col justify-center items-center py-2">
+        <TodoTitle />
+
+
         <Field>
           <div onClick={(e) => e.stopPropagation()} className="box-border flex flex-col justify-center items-center">
-            <FieldLabel htmlFor="textarea-message" className="text-white pt-1 pb-2 pe-[7.5rem]">Enter Todo Message</FieldLabel>
-            {/* The Textarea is now a controlled component. Its value is driven by state. */}
-            <Textarea className={`bg-[#313437] w-[18.6rem] text-white ${textAreaEl ? 'border-2 border-red-500' : ''} ${removeTextBorderWarning === true ? 'border-[0.05rem] border-white' : ''}`} id="textarea-message" placeholder={`${textAreaEl ? 'Please enter a Todo message' : 'Type your todo message here...'}`} onChange={handleInputChange} value={message} onClick={(e) => e.stopPropagation()} />
+            <div className="py-[0.55rem]">
+              <FieldLabel htmlFor="textarea-message" className="text-white pt-1 pb-2 ps-[0.9rem]">Enter Todo Message</FieldLabel>
+              {/* The Textarea is now a controlled component. Its value is driven by state. The border is controlled by context. */}
+              <Textarea className={`bg-[#313437] w-[19.6rem] text-white ${todoMessageWarning ? 'border-2 border-red-500' : 'border-[0.05rem] border-white'} ${message ? 'border-white border-[0.05rem]' : ''}`} id="textarea-message" placeholder={`${todoMessageWarning ? 'Please enter a Todo message' : 'Type your todo message here...'}`} onChange={handleInputChange} value={message} onClick={(e) => e.stopPropagation()} />
+            </div>
           </div>
         </Field>
 
@@ -75,7 +64,7 @@ export function TextareaField({ todoMessage, hourSelected, minuteSelected, sound
             <RepeatTodo repeatOption={repeatOption} />
           </div>
 
-          <CreateAndVerifyTodo checkMessageStatus={authUserMessageInput} authCalendarInput={authCalendarInput} message={message} />
+          <CreateAndVerifyTodo />
 
         </div>
       </div>

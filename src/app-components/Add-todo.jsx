@@ -7,24 +7,9 @@ import { warningCodes } from "./context-hook";
 import "./add-todo.css"
 
 
-export function CreateTodo({setTodoMessage, setDateSelected, setHourSelected, setMinuteSelected, setSoundSelected, setCategoryUserInput, setRepeatOption, setCategoryWarning, setSoundSelectedWarning, setTimeSelectedWarning, setCalendarBorderWarning, addActivity, setRenderCheckMark}) {  
+export function CreateTodo({setTodoMessage, setDateSelected, setHourSelected, setMinuteSelected, setSoundSelected, setCategoryUserInput, setRepeatOption, addActivity, setRenderCheckMark}) {  
 
   const { todoMessage, dateSelected, hourSelected, minuteSelected, soundSelected, categoryUserInput, addBgBlur, calendarBorderWarning, categoryWarning, timeSelectedWarning, soundSelectedWarning } = useContext(warningCodes);
-
-  //pratice useContext
-
-  const authCalendarInput = () => {
-    setCalendarBorderWarning(!dateSelected);
-    setSoundSelectedWarning(!soundSelected);
-    if (!hourSelected && !minuteSelected) {
-      setTimeSelectedWarning(true);
-    } else {
-      setTimeSelectedWarning(false);
-    }
-    
-    setCategoryWarning(!categoryUserInput)
-  }
-
   
 
   // const textInputCheck = () => {
@@ -65,7 +50,7 @@ export function CreateTodo({setTodoMessage, setDateSelected, setHourSelected, se
             <div className="w-full flex justify-center items-center">
               <div className="w-[64%]">
                 <TimeContext.Provider value={{hourSelected, categoryUserInput, categoryWarning}}>
-                  <TextareaField todoMessage={setTodoMessage} hourSelected={setHourSelected} minuteSelected={setMinuteSelected} soundSelected={setSoundSelected} setCategoryUserInput={setCategoryUserInput} repeatOption={setRepeatOption} dateInput={dateSelected} authCalendarInput={authCalendarInput} soundSelectedWarning={soundSelectedWarning} userAlertSound={soundSelected}
+                  <TextareaField todoMessage={setTodoMessage} hourSelected={setHourSelected} minuteSelected={setMinuteSelected} soundSelected={setSoundSelected} setCategoryUserInput={setCategoryUserInput} repeatOption={setRepeatOption} dateInput={dateSelected} soundSelectedWarning={soundSelectedWarning} userAlertSound={soundSelected}
                   timeSelectedWarning={timeSelectedWarning} setRenderCheckMark={setRenderCheckMark}/>
                 </TimeContext.Provider>
               </div>
