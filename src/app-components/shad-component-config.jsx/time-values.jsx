@@ -5,9 +5,21 @@ import { useEffect, useRef } from "react";
 
 const MotionDropdownMenuItem = motion(DropdownMenuItem)
 
-export function TimeHM({ timeH, hourSelected }) {
+export function TimeHM({ timeH, hourSelected, scrollTo}) {
   const timeEl = useRef([]);
-  
+
+  useEffect(() => {
+    if (scrollTo) {
+      // Use setTimeout to allow enough time for the dropdown animation/render to complete
+      const timeoutId = setTimeout(() => {
+        const index = timeH.indexOf(scrollTo);
+        if (index !== -1 && timeEl.current[index]) {
+          timeEl.current[index].scrollIntoView({ block: "center" });
+        }
+      }, 50);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [scrollTo]);
 
   return (
     <>
@@ -23,9 +35,9 @@ export function TimeHM({ timeH, hourSelected }) {
         }} transition={{
           duration: 0.2
         }}
-        className="mt-5 bg-blue-600 text-black font-bold p-[0.7rem]"
+        className="mt-5 bg-blue-700 text-black font-bold p-[0.7rem]"
         ref={(el) => (timeEl.current[index] = el)}
-        onViewportEnter={() => {
+         onViewportEnter={(e) => {
             hourSelected(hour);
           }}
         key={hour}>{hour}</MotionDropdownMenuItem>
@@ -35,13 +47,24 @@ export function TimeHM({ timeH, hourSelected }) {
     </>
   )
 }
+export function TimeMM({ timeM, minuteSelected, scrollTo }) {
+  const timeEl = useRef([]);
 
-export function TimeMM({ timeM, minuteSelected }) {
+  useEffect(() => {
+    if (scrollTo) {
+      const timeoutId = setTimeout(() => {
+        const index = timeM.indexOf(scrollTo);
+        if (index !== -1 && timeEl.current[index]) {
+          timeEl.current[index].scrollIntoView({ block: "center" });
+        }
+      }, 50);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [scrollTo]);
 
   return (
     <>
-      
-      {timeM.map((minute) => (
+      {timeM.map((minute, index) => (
         <MotionDropdownMenuItem 
         initial={{
           scale: 0.9
@@ -53,9 +76,12 @@ export function TimeMM({ timeM, minuteSelected }) {
           duration: 0.2
         }}
         className="mt-5 bg-accent font-bold text-black p-[0.7rem]"
-        onViewportEnter={() => {minuteSelected(minute)}}
+        ref={(el) => (timeEl.current[index] = el)}
+        onViewportEnter={(e) => {
+          minuteSelected(minute);
+        }}
         key={minute}>{minute}</MotionDropdownMenuItem>
       ))}
     </>
   )
-}
+}          

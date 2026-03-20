@@ -45,7 +45,7 @@ export function CreateTodo({setTodoMessage, setDateSelected, setHourSelected, se
               dateSelected={setDateSelected}
               calendarBorderWarning={calendarBorderWarning}
               dateInput={dateSelected}
-              />
+            />
 
             <div className="w-full flex justify-center items-center">
               <div className="w-[64%]">

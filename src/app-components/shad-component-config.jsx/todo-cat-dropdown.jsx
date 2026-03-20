@@ -14,11 +14,11 @@ import { warningCodes } from "../context-hook";
 
 
 export function CategoryDropDown({ setCategoryUserInput  }) {
-  const category = ['None', 'work', 'Personal', 'Study', 'Others'];
+  const category = ['None', 'Work', 'Personal', 'Study', 'Others'];
 
   // 1. Consume all required values from the context in a single call.
   const { categoryUserInput, categoryWarning } = useContext(TimeContext);
-  const { renderCheckMark, setRenderCheckMark, checkMark } = useContext(warningCodes);
+  const { renderCheckMark, setRenderCheckMark, checkMark, categoryEdit, verifyDataRender, setCategoryEdit} = useContext(warningCodes);
   const [changeTxtEl, setChangeTxtEl] = useState('Todo Category');
 
   useEffect(() => {
@@ -31,9 +31,13 @@ export function CategoryDropDown({ setCategoryUserInput  }) {
     if (checkMark) {
       setRenderCheckMark(checkMark);
     }
+    if (categoryEdit) {
+      setCategoryUserInput(verifyDataRender[0].category);
+      setRenderCheckMark(verifyDataRender[0].category);
+    }
 
 
-  }, [categoryWarning, checkMark, setRenderCheckMark]);
+  }, [categoryWarning, checkMark, categoryEdit]);
 
 
 
@@ -44,6 +48,7 @@ export function CategoryDropDown({ setCategoryUserInput  }) {
   }, [categoryUserInput]);
 
   const getClickedItem = (activity) => {
+    setCategoryEdit(false);
     setCategoryUserInput(activity)
 
     if (renderCheckMark === activity) {
@@ -65,7 +70,7 @@ export function CategoryDropDown({ setCategoryUserInput  }) {
             <div className="[scrollbar-width:none] h-[5rem] overflow-y-auto">
               {
                 category.map((activity) => (
-                  <DropdownMenuItem key={activity} className="hover:bg-[#424546]" onClick={() => 
+                  <DropdownMenuItem key={activity} className="!hover:bg-[#424546]" onClick={() => 
                   getClickedItem(activity)
                   }>{activity}{renderCheckMark === activity ? <ion-icon name="checkmark-outline" class="text-green-700 font-bold ps-[3rem] "></ion-icon> : ''}</DropdownMenuItem>
                 ))

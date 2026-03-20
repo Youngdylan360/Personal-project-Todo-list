@@ -1,7 +1,7 @@
 import { FunnelPlus } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { warningCodes } from "./context-hook";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 
 export function CreateAndVerifyTodo() {
@@ -17,7 +17,10 @@ export function CreateAndVerifyTodo() {
     soundSelected,
     categoryUserInput,
     repeatOption,
-    addActivity
+    todoTitle,
+    addActivity, 
+    editBtnOn,
+    replaceEdit
   } = useContext(warningCodes);
 
   const verifyInput = () => {
@@ -31,10 +34,14 @@ export function CreateAndVerifyTodo() {
         sound: soundSelected,
         category: categoryUserInput,
         repeat: repeatOption,
+        title: todoTitle,
         completed: false
       };
+      
       setSaveUserData([...saveUserData, newTodo]);
       addActivity();
+    } else {
+      console.log(hourSelected, minuteSelected);
     }
   }
 
@@ -45,8 +52,13 @@ export function CreateAndVerifyTodo() {
     <>
       <Button onClick={(e) => {
         e.stopPropagation();
-        verifyInput();
-      }}>Add Todo</Button>
+        if (editBtnOn) {
+          replaceEdit();
+          addActivity();
+        } else {
+          verifyInput();
+        }
+      }} children={editBtnOn ? 'Add Edits' : 'Add Todo'}></Button>
     </>
   )
 }

@@ -18,6 +18,8 @@ export function CalendarDate({ dateSelected, calendarBorderWarning, dateInput })
     new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   );
 
+  
+
   // Determine if we are in an error state:
   // We show error if the parent says so (calendarBorderWarning) AND we still don't have a dateInput.
   // If the user selects a date (dateInput becomes true), the error clears immediately visually.

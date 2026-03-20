@@ -9,7 +9,7 @@ import { TreePalm } from "lucide-react";
 export function Header({ addActivity, setCategoryUserInput }) {
   const time = useTime();
 
-  const { setRenderCheckMark } = useContext(warningCodes);
+  const { setRenderCheckMark, getSearchInput } = useContext(warningCodes);
 
   const rotate = useTransform(time, [0, 28000], [0, 360], {
     clamp: false,
@@ -24,7 +24,7 @@ export function Header({ addActivity, setCategoryUserInput }) {
   });
 
   const pulsingBg = useTransform(time, (t) => {
-    const blur = (Math.sin(t / 1000) + 1) * 5;
+    const blur = (Math.sin(t / 1000) + 1) * 6;
     return `blur(${blur}px)`;
   });
 
@@ -32,14 +32,14 @@ export function Header({ addActivity, setCategoryUserInput }) {
   return (
     <>
       <div className="box-border">
-        <header className="flex flex-col justify-center items-start box-border h-[10rem] gap-y-8 ">
+        <header className="flex flex-col justify-center items-start  box-border h-[10rem] gap-y-8 md:items-center pt-3 ">
 
           <div className="flex ms-8 w-[16rem] h-16 contain-content items-center gap-x-4">
             <ion-icon name="moon-outline" className="w-8 h-8 font-semibold text-[#ffffff]"></ion-icon>
             <h1 className="text-2xl text-white">Focus: To-Do</h1>
           </div>
 
-          <div className="flex justify-start items-center gap-2  overflow-x-scroll [scrollbar-width:none] w-[24rem] ps-1 sm:justify-center ">
+          <div className="flex justify-start items-center gap-2  overflow-x-scroll [scrollbar-width:none] w-[24rem] ps-2 sm:justify-center h-[2.8rem]">
             <motion.div className="p-[0.3rem] relative rounded-full"
               initial="rest"
               whileHover="hover"
@@ -145,7 +145,7 @@ export function Header({ addActivity, setCategoryUserInput }) {
                 addActivity();
                 setCategoryUserInput('Others');
                 setRenderCheckMark('Others');
-              }}>Others</Button>
+              }}>OTHERS</Button>
 
             </motion.div>
           </div>
@@ -155,30 +155,42 @@ export function Header({ addActivity, setCategoryUserInput }) {
           <Search />
         </motion.div>
 
-        <div className="w-full flex justify-center items-center">
-          <motion.div
-            className="flex relative flex-col w-[23.6rem] rounded-md div p-px inset-0 h-44 mt-7 justify-center items-center  wrapper"
-            initial="rest"
-            whileHover="hover"
-            animate="rest"
-            whileTap="tap"
-          >
-            <motion.div
-              className="absolute flex justify-center items-center inset-0 rounded-md"
-              style={{ background: rotatingBg }}
-              variants={{
-                rest: { opacity: 0, transition: { duration: 0.5 } },
-                hover: { opacity: 1, transition: { duration: 0.5 } },
-              }}
-            />
-            <Add />
-          </motion.div>
-        </div>
 
-        <div className="w-full h-8 flex justify-center items-center">
-          <p className="w-52 mt-6 h-[0.23rem] bg-[#056362]"></p>
-        </div>
+        {
+          !getSearchInput ? (
+            <div>
+              <div className="w-full flex justify-center items-center">
+                <motion.div
+                  className="flex relative flex-col w-[23.6rem] rounded-md div p-px inset-0 h-44 mt-7 justify-center items-center  wrapper"
+                  initial="rest"
+                  whileHover="hover"
+                  animate="rest"
+                  whileTap="hover"
+                >
+                  <motion.div
+                    className="absolute flex justify-center items-center inset-0 rounded-md"
+                    style={{ background: rotatingBg }}
+                    variants={{
+                      rest: { opacity: 0, transition: { duration: 0.5 } },
+                      hover: { opacity: 1, transition: { duration: 0.5 } },
+                    }}
+                  />
+                  <Add />
+                </motion.div>
+              </div>
+
+              <div className="w-full h-8 flex justify-center items-center">
+                <p className="w-52 mt-6 h-[0.23rem] bg-[#056362]"></p>
+              </div>
+            </div>
+          ) : (
+            <div className="pt-[rem]">
+
+            </div>
+          )
+        }
       </div>
+
 
 
     </>

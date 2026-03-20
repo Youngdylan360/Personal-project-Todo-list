@@ -5,11 +5,12 @@ import {
   ChevronRightIcon,
 } from "lucide-react"
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
-
+import { useContext, useEffect, useMemo } from "react";
+import { warningCodes } from "../../app-components/context-hook";
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { FieldLabel, FieldDescription } from "./field";
- 
+
 function Calendar({
   className,
   classNames,
@@ -23,11 +24,38 @@ function Calendar({
 }) {
   const defaultClassNames = getDefaultClassNames()
 
+  const { setCalendarEdit, editBtnOn, calendarEdit, verifyDataRender } = useContext(warningCodes);
+
+  const savedDate = useMemo(() => {
+    if (calendarEdit && verifyDataRender && verifyDataRender.length > 0) {
+      const date = new Date(verifyDataRender[0].date);
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+    return undefined;
+  }, [calendarEdit, verifyDataRender]);
+
+  // const saveCalendarOnEdit = () => {
+  //   if (calendarEdit) {
+  //     dateSelected(verifyDataRender.date);
+  //   }
+  // }
+
+
   return (
     <>
-      
+
       <DayPicker
-        onDayClick={(day) => dateSelected(day)}
+        onDayClick={(day) => {
+          setCalendarEdit(false);
+          dateSelected(day);
+        }}
+        modifiers={{
+          saved: savedDate ? [savedDate] : [],
+        }}
+        modifiersClassNames={{
+          saved: "bg-green-500 text-white hover:bg-green-600 hover:text-white focus:bg-green-600 focus:text-white rounded-md opacity-100",
+        }}
         showOutsideDays={showOutsideDays}
         className={cn(
           "group/calendar bg-background p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -137,7 +165,7 @@ function Calendar({
           },
           ...components,
         }}
-      {...props} />
+        {...props} />
     </>
   );
 }
@@ -170,6 +198,7 @@ function CalendarDayButton({
       data-range-start={modifiers.range_start}
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
+      data-saved={modifiers.saved}
       className={cn(
         "flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-[3px] group-data-[focused=true]/day:ring-ring/50 data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground dark:hover:text-accent-foreground [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
