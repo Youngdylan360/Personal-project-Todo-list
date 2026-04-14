@@ -115,7 +115,29 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@theme {
+  --breakpoint-breake: 30rem; 
+}
+
+@theme {
+  --breakpoint-visible: 1232px; 
+}
+
+@utility tryclass {
+  @media (min-width: 768px) {
+    @apply bg-red-500 h-[10rem];
+  
+  
+  }
+}
 
 
-
-
+@layer base {
+  * {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  
+  }
+}

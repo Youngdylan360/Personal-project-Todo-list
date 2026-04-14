@@ -27,7 +27,7 @@ export function CreateAndVerifyTodo() {
     const isFormValid = validateInputs();
     if (isFormValid) {
       const newTodo = {
-        id: crypto.randomUUID(), // Use a simple unique ID for now
+        id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : Math.random().toString(36).substring(2, 9) + Date.now().toString(36), // Use a simple unique ID for now
         message: todoMessage,
         date: dateSelected,
         time: `${hourSelected}:${minuteSelected}`,

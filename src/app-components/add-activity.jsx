@@ -1,4 +1,4 @@
-
+import { motion } from "motion/react";
 import  briefCaseIcon  from "../assets/briefcase-icon.svg"
 import  plusIcon from "../assets/plus-icon.svg"
 import trashCanIcon from "../assets/trash-can.svg"
@@ -9,7 +9,15 @@ export function Add() {
 
   return (
     <>
-      <div className="w-[98%] h-[98%] absolute bg-[#1E232A] rounded-md flex pt-[1.5rem]  text-white box-border">
+      <motion.div 
+        className="w-[98%] h-[98%] absolute bg-[#1E232A] rounded-md flex pt-[1.5rem] lg:mt-0 text-white box-border"
+        whileHover="hover"
+        variants={{
+          hover: {
+            scaleX: 1.05,
+            scaleY: 1.05,
+          }
+        }}>
 
         
         <div className="flex flex-col items-start gap-y-[1rem] text-[1.3rem] ps-6">
@@ -28,10 +36,10 @@ export function Add() {
           </div>
         </div>
 
-        <div className="pt-9 w-32 flex gap-x-4 ">
-          <div className="bg-[#1a8cd8] py-1 px-2 h-8  rounded-md">WORK</div>
+        <div className="pt-9 w-32 md:w-[12rem] flex gap-x-4 md:justify-end lg:w-[17rem] lg:gap-x-8 lg:pe-5">
+          <div className="bg-[#1a8cd8] py-1 px-2 h-8  rounded-md md:py-6 md:px-8  md:flex md:justify-center md:items-center md:text-[1.2rem]">WORK</div>
        
-          <div className="-mt-9 ms-2 flex flex-col pb-4 gap-y-4 h-[10rem]">
+          <div className="-mt-9 ms-2 flex flex-col pb-4 gap-y-4 h-[10rem] md:gap-y-6 md:pt-3">
 
             <img src={pencilIcon} alt="pencilIcon" />
 
@@ -39,7 +47,7 @@ export function Add() {
             
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }

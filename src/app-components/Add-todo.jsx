@@ -1,5 +1,6 @@
 import addIcon from "../assets/add-icon.svg"
-import { useState, useEffect, useContext } from "react"
+import { motion } from "motion/react"
+import { useEffect, useContext } from "react"
 import { CalendarDate } from "./calendar";
 import { TextareaField } from "./text-input";
 import { TimeContext } from "./context-hook";
@@ -25,43 +26,41 @@ export function CreateTodo({setTodoMessage, setDateSelected, setHourSelected, se
       // Prevent scrolling on the body when the modal is open
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     }
     // Cleanup function to reset the style when the component unmounts
-    return () => { document.body.style.overflow = 'unset' };
+    return () => { document.body.style.overflow = '' };
   }, [addBgBlur]); // This effect runs whenever addBgBlur changes
 
   return (
     <div className="flex justify-center ">
-      <div className="w-[16rem] bg-[#313437] rounded-full flex justify-center items-center mt-6 mb-2 sticky top-o todo-bg shadow-2xl">
-        <img src={addIcon} onClick={addActivity} className="w-[6rem]" alt="" />
+      {addBgBlur && (
+        <div className="fixed flex-col pt-8 justify-center items-center top-0 left-0 z-50 overflow-auto bottom-0 bg-white-800/2 backdrop-blur-lg w-full h-full" onClick={addActivity}>
+          <span className="text-white absolute top-[0rem] left-0" onClick={addActivity}><ion-icon name="arrow-back-outline" class="w-[3.3rem] pt-4  pe-4"
+          ></ion-icon></span>
 
-        {addBgBlur && (
-          <div className="fixed flex-col pt-8 justify-center items-center top-0 left-0 z-40 overflow-auto bottom-0 bg-white-800/2 backdrop-blur-lg w-full h-full" onClick={addActivity}>
-            <span className="text-white absolute top-[0rem] left-0" onClick={addActivity}><ion-icon name="arrow-back-outline" class="w-[3.3rem] pt-4  pe-4"
-            ></ion-icon></span>
+          <CalendarDate
+            dateSelected={setDateSelected}
+            calendarBorderWarning={calendarBorderWarning}
+            dateInput={dateSelected}
+          />
 
-            <CalendarDate
-              dateSelected={setDateSelected}
-              calendarBorderWarning={calendarBorderWarning}
-              dateInput={dateSelected}
-            />
-
-            <div className="w-full flex justify-center items-center">
-              <div className="w-[64%]">
-                <TimeContext.Provider value={{hourSelected, categoryUserInput, categoryWarning}}>
-                  <TextareaField todoMessage={setTodoMessage} hourSelected={setHourSelected} minuteSelected={setMinuteSelected} soundSelected={setSoundSelected} setCategoryUserInput={setCategoryUserInput} repeatOption={setRepeatOption} dateInput={dateSelected} soundSelectedWarning={soundSelectedWarning} userAlertSound={soundSelected}
-                  timeSelectedWarning={timeSelectedWarning} setRenderCheckMark={setRenderCheckMark}/>
-                </TimeContext.Provider>
-              </div>
+          <div className="w-full flex justify-center items-center">
+            <div className="w-[64%]">
+              <TimeContext.Provider value={{hourSelected, categoryUserInput, categoryWarning}}>
+                <TextareaField todoMessage={setTodoMessage} hourSelected={setHourSelected} minuteSelected={setMinuteSelected} soundSelected={setSoundSelected} setCategoryUserInput={setCategoryUserInput} repeatOption={setRepeatOption} dateInput={dateSelected} soundSelectedWarning={soundSelectedWarning} userAlertSound={soundSelected}
+                timeSelectedWarning={timeSelectedWarning} setRenderCheckMark={setRenderCheckMark}/>
+              </TimeContext.Provider>
             </div>
-
-
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-
+      <motion.div className="w-[16rem] bg-[#313437] rounded-full flex justify-center items-center mt-6 mb-2 fixed z-40 bottom-3 todo-bg shadow-2xl"
+        whileHover={{ scaleX: 1.05, scaleY: 1.05, y: -12}}
+        whileTap={{scaleX: 1.02, scaleY: 1.02, y: -9}}>
+        <img src={addIcon} onClick={addActivity} className="w-[6rem]" alt="" />
+      </motion.div>
     </div>
   )
 }

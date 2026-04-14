@@ -63,11 +63,14 @@ export function TextareaField({ todoMessage, hourSelected, minuteSelected, sound
 
 
             <Field>
-              <div onClick={(e) => e.stopPropagation()} className="box-border flex flex-col justify-center items-center">
+              <div className="box-border flex flex-col justify-center items-center">
                 <div className="py-[0.55rem]">
                   <FieldLabel htmlFor="textarea-message" className="text-white pt-1 pb-2 ">Enter Todo Message</FieldLabel>
                   {/* The Textarea is now a controlled component. Its value is driven by state. The border is controlled by context. */}
-                <Textarea className={`bg-[#313437] w-[18.6rem] text-white ${todoMessageWarning ? 'border-2 border-red-500' : 'border-[0.05rem] border-white'} ${message ? 'border-white border-[0.05rem]' : ''}`} id="textarea-message" placeholder={`${todoMessageWarning ? 'Please enter a Todo message' : 'Type your todo message here...'}`} onChange={handleInputChange} onClick={(e) => e.stopPropagation(setMessageInput(false))} value={messageInput ?  displayData.message : contextTodoMessage}
+                <Textarea className={`bg-[#313437] w-[18.6rem] text-white ${todoMessageWarning ? 'border-2 border-red-500' : 'border-[0.05rem] border-white'} ${message ? 'border-white border-[0.05rem]' : ''}`} id="textarea-message" placeholder={`${todoMessageWarning ? 'Please enter a Todo message' : 'Type your todo message here...'}`} onChange={handleInputChange} onClick={(e) => {
+                  e.stopPropagation();
+                  setMessageInput(false);
+                }} value={messageInput ?  displayData.message : contextTodoMessage}
                 ref={input} />
                 </div>
               </div>
@@ -96,7 +99,7 @@ export function TextareaField({ todoMessage, hourSelected, minuteSelected, sound
 
 
           <Field>
-            <div onClick={(e) => e.stopPropagation()} className="box-border flex flex-col justify-center items-center">
+            <div className="box-border flex flex-col justify-center items-center">
               <div className="py-[0.55rem]">
                 <FieldLabel htmlFor="textarea-message" className="text-white pt-1 pb-2 ">Enter Todo Message</FieldLabel>
                 {/* The Textarea is now a controlled component. Its value is driven by state. The border is controlled by context. */}

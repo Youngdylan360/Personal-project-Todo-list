@@ -26,7 +26,7 @@ export function Edit() {
     <>
 
       {verifyDataRender && verifyDataRender.map((displayClickedData) => (
-        <div key={displayClickedData.id} className="fixed flex-col pt-8 justify-center items-center top-0 left-0 z-40 overflow-auto bottom-0 bg-black-800/2 backdrop-blur-lg  w-full h-full ps-3 !gap-y-[3rem] box-border " onClick={() => {
+        <div key={displayClickedData.id} className="fixed flex-col pb-5 flex flex-col justify-center items-center top-0 left-0 z-40 overflow-auto bottom-0 bg-black-800/2 backdrop-blur-lg  w-full h-full  !gap-y-[1rem] box-border " onClick={() => {
           editToggle();
         }}>
 
@@ -34,7 +34,7 @@ export function Edit() {
             <ion-icon name="arrow-back-outline" class="w-[3.3rem]"
             ></ion-icon>
           </div>
-          <div className="pb-8 w-[97%] !flex !justify-center !items-center" >
+          <div className="pb-8 w-[95%] !flex !justify-center !items-center" >
             <Card size="sm" className="mx-auto w-full max-w-sm bg-[#313437] text-white py-[0.7rem] gap-2" onClick={(e) => e.stopPropagation()}>
               <CardHeader className="py-0">
                 <CardTitle >Todo Title</CardTitle>
@@ -48,7 +48,7 @@ export function Edit() {
             </Card>
           </div>
 
-          <div className="w-[97%] pb-8">
+          <div className="w-[95%] pb-8">
             <Card size="sm" className="mx-auto w-full max-w-sm bg-[#313437] text-white" onClick={(e) => e.stopPropagation()}>
               <CardHeader>
                 <CardTitle>Todo Message</CardTitle>
@@ -64,7 +64,7 @@ export function Edit() {
             </Card>
           </div>
 
-          <div className="w-[97%]">
+          <div className="w-[95%] ">
             <Card size="sm" className="mx-auto w-full max-w-sm bg-[#313437] text-white" onClick={(e) => e.stopPropagation()}>
               <CardHeader>
                 <CardTitle>Other Details</CardTitle>
@@ -78,7 +78,7 @@ export function Edit() {
                 </p>
 
                 <p>
-                  Time: <spsn className="ps-1.5">{displayClickedData.time}</spsn>
+                  Time: <span className="ps-1.5">{displayClickedData.time}</span>
                 </p>
 
                 <p>
